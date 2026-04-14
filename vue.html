@@ -39,9 +39,7 @@
        :key="p.id"
        role="tab"
        class="tab flex gap-2 items-center transition-all duration-300"
-       :class="{
-         'tab-active scale-105': plataformaAtiva === p.id
-       }"
+       :class="{ 'tab-active scale-105': plataformaAtiva === p.id }"
        @click="trocarPlataforma(p.id)">
 
       <i :class="p.icone"></i>
@@ -53,7 +51,6 @@
 
   <!-- CONTEÚDO COM ANIMAÇÃO -->
   <transition name="fade" mode="out-in">
-
     <div :key="plataformaAtiva">
 
       <div v-for="(passo, index) in tutorialAtual.passos"
@@ -65,32 +62,41 @@
           {{ index + 1 }}. {{ passo.titulo }}
         </h2>
 
+        <!-- ALERTA (ex: PATH) -->
+        <div v-if="passo.tipo === 'configuracao'" class="alert alert-warning mb-3">
+          ⚠️ Passo manual importante
+        </div>
+
         <!-- TEXTO -->
         <p v-if="passo.texto" class="mb-3 text-gray-600">
           {{ passo.texto }}
         </p>
 
-        <!-- CÓDIGO -->
-        <div v-if="passo.codigo" class="relative">
+        <!-- MOCKUP CODE -->
+        <div v-if="passo.codigo" class="mockup-code text-sm relative">
 
           <!-- BOTÃO COPIAR -->
           <button
             @click="copiarCodigo(passo.codigo)"
-            class="absolute right-2 top-2 btn btn-xs btn-ghost">
-
+            class="absolute right-3 top-3 btn btn-xs btn-ghost">
             <i class="fas fa-copy"></i>
           </button>
 
-          <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm">
-<code>{{ passo.codigo }}</code>
-          </pre>
+          <!-- LINHAS -->
+          <div v-for="(linha, i) in passo.codigo" :key="i">
+            <pre
+              :data-prefix="passo.prefixo || (passo.tipo === 'output' ? '>' : '$')"
+              :class="passo.tipo === 'output' ? 'text-green-400' : ''"
+            >
+<code>{{ linha }}</code>
+            </pre>
+          </div>
 
         </div>
 
       </div>
 
     </div>
-
   </transition>
 
 </div>
@@ -137,22 +143,18 @@ createApp({
 
   methods: {
 
-    // Detecta sistema operacional
     detectarSO() {
-      const userAgent = navigator.userAgent.toLowerCase()
+      const ua = navigator.userAgent.toLowerCase()
 
-      if (userAgent.includes("win")) return "windows"
-      if (userAgent.includes("linux")) return "ubuntu"
+      if (ua.includes("win")) return "windows"
+      if (ua.includes("linux")) return "ubuntu"
 
-      return "windows" // fallback
+      return "windows"
     },
 
     trocarPlataforma(id) {
       this.plataformaAtiva = id
-
-      // Salva preferência
       localStorage.setItem("plataforma", id)
-
       this.carregarConteudo()
     },
 
@@ -167,16 +169,36 @@ createApp({
               cor: "blue"
             },
             {
-  titulo: "Adicionar ao PATH",
-  texto: "Copie o caminho abaixo e adicione nas variáveis de ambiente do Windows (Path).",
-  cor: "yellow",
-  codigo: `C:\\mingw64\\bin`
-},
+              titulo: "Adicionar ao PATH",
+              tipo: "configuracao",
+              texto: "Copie o caminho abaixo e adicione nas variáveis de ambiente.",
+              cor: "yellow",
+              codigo: [
+                "C:\\mingw64\\bin"
+              ]
+            },
+            {
+              titulo: "Verificar instalação",
+              cor: "purple",
+              codigo: [
+                "g++ --version"
+              ]
+            },
             {
               titulo: "Compilar código",
               cor: "green",
-              codigo: `g++ main.cpp -o hello
-./hello`
+              codigo: [
+                "g++ main.cpp -o hello",
+                "./hello"
+              ]
+            },
+            {
+              titulo: "Saída esperada",
+              tipo: "output",
+              cor: "gray",
+              codigo: [
+                "Hello, World!"
+              ]
             }
           ]
         }
@@ -188,14 +210,33 @@ createApp({
             {
               titulo: "Instalar g++",
               cor: "blue",
-              codigo: `sudo apt update
-sudo apt install build-essential`
+              codigo: [
+                "sudo apt update",
+                "sudo apt install build-essential"
+              ]
+            },
+            {
+              titulo: "Criar arquivo",
+              cor: "yellow",
+              codigo: [
+                "nano main.cpp"
+              ]
             },
             {
               titulo: "Compilar código",
               cor: "green",
-              codigo: `g++ main.cpp -o hello
-./hello`
+              codigo: [
+                "g++ main.cpp -o hello",
+                "./hello"
+              ]
+            },
+            {
+              titulo: "Saída esperada",
+              tipo: "output",
+              cor: "gray",
+              codigo: [
+                "Hello, World!"
+              ]
             }
           ]
         }
@@ -203,7 +244,9 @@ sudo apt install build-essential`
 
     },
 
-    copiarCodigo(texto) {
+    copiarCodigo(linhas) {
+      const texto = linhas.join("\n")
+
       navigator.clipboard.writeText(texto)
         .then(() => {
           alert("Código copiado!")
@@ -213,14 +256,8 @@ sudo apt install build-essential`
   },
 
   mounted() {
-
-    // Prioridade:
-    // 1. localStorage
-    // 2. detecção automática
     const salvo = localStorage.getItem("plataforma")
-
     this.plataformaAtiva = salvo || this.detectarSO()
-
     this.carregarConteudo()
   }
 
