@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🚀 Hello World em C++ no VS Code</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 px-6 shadow-lg">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-3 flex items-center justify-center gap-3">
+        <i class="fas fa-rocket"></i> Hello World em C++
+      </h1>
+      <p class="text-xl opacity-90">Tutorial passo a passo para VS Code (com compilador MinGW-w64)</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-10 space-y-10">
+
+    <!-- Passo 1 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">1</span>
+        Instalar o Compilador (MinGW-w64)
+      </h2>
+      <ul class="list-disc pl-5 space-y-2">
+        <li>Baixe em <a href="https://winlibs.com" class="text-blue-600 hover:underline" target="_blank">winlibs.com</a> ou <a href="https://www.msys2.org" class="text-blue-600 hover:underline" target="_blank">MSYS2</a></li>
+        <li>Instale em caminho sem espaços: <code class="bg-gray-100 px-2 py-1 rounded">C:\mingw64</code></li>
+        <li>Selecione: <code class="bg-gray-100 px-2 py-1 rounded">x86_64 + posix + seh</code></li>
+      </ul>
+    </section>
+
+    <!-- Passo 2 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">2</span>
+        Adicionar ao PATH
+      </h2>
+      <p class="mb-3">Adicione <code class="bg-gray-100 px-2 py-1 rounded">C:\mingw64\bin</code> às variáveis de ambiente.</p>
+      <button onclick="copyPath()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+        <i class="fas fa-copy"></i> Copiar Caminho
+      </button>
+    </section>
+
+    <!-- Passo 3 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">3</span>
+        Verificar Instalação
+      </h2>
+      <pre class="bg-gray-100 p-3 rounded overflow-x-auto"><code>g++ --version</code></pre>
+      <p class="mt-2 text-sm text-gray-600">Se aparecer a versão, está tudo certo! ✅</p>
+    </section>
+
+    <!-- Passo 4 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">4</span>
+        Criar Projeto no VS Code
+      </h2>
+      <ol class="list-decimal pl-5 space-y-2">
+        <li>Crie uma pasta: <code class="bg-gray-100 px-2 py-1 rounded">C:\projetos\hello</code></li>
+        <li>Abra no VS Code → <code class="bg-gray-100 px-2 py-1 rounded">File > Open Folder</code></li>
+        <li>Crie <code class="bg-gray-100 px-2 py-1 rounded">main.cpp</code></li>
+      </ol>
+    </section>
+
+    <!-- Passo 5 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-red-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">5</span>
+        Escrever o Código
+      </h2>
+      <pre class="bg-gray-100 p-3 rounded overflow-x-auto"><code>#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+    return 0;
+}</code></pre>
+    </section>
+
+    <!-- Passo 6 -->
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4 border-indigo-500">
+      <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+        <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm">6</span>
+        Compilar e Executar
+      </h2>
+      <pre class="bg-gray-100 p-3 rounded overflow-x-auto"><code>g++ main.cpp -o hello
+./hello</code></pre>
+      <p class="mt-3 text-sm text-gray-600">💡 Dica: Instale a extensão <strong>C/C++</strong> no VS Code para melhor experiência.</p>
+    </section>
+
+    <!-- Dica Final -->
+    <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-xl border border-teal-200">
+      <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+        <i class="fas fa-lightbulb text-yellow-500"></i> Quer rodar com F5?
+      </h3>
+      <p>Posso te ajudar a configurar o <code class="bg-white px-2 py-1 rounded">launch.json</code> para debugar com um clique!</p>
+      <button onclick="alert('Vamos configurar o launch.json! Clique em \"Configurar Debug\" no VS Code > Run and Debug > Create a launch.json file. Escolha \"C++ (GDB)\" e pronto!')" class="mt-3 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm">
+        Mostrar Como Configurar
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 text-center mt-10">
+    <p>✅ Feito com ❤️ para iniciantes em C++</p>
+  </footer>
+
+  <script>
+    function copyPath() {
+      navigator.clipboard.writeText("C:\\mingw64\\bin")
+        .then(() => alert("Caminho copiado para a área de transferência!"))
+        .catch(err => alert("Erro ao copiar: " + err));
+    }
+  </script>
+
+</body>
+</html>

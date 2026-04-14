@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plataforma de Tutoriais</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Vue 3 CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 px-6 shadow-lg">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl font-bold mb-2">
+        {{ tutorialAtual.titulo }}
+      </h1>
+      <p class="text-lg opacity-90">
+        {{ tutorialAtual.descricao }}
+      </p>
+
+      <!-- Seletor de tutorial -->
+      <div class="mt-4">
+        <select v-model="tutorialSelecionado" @change="trocarTutorial"
+          class="text-black px-3 py-2 rounded">
+          
+          <option v-for="t in listaTutoriais" :value="t.id">
+            {{ t.nome }}
+          </option>
+
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+
+    <!-- LOOP DE PASSOS -->
+    <step-card
+      v-for="(passo, index) in tutorialAtual.passos"
+      :key="index"
+      :numero="index + 1"
+      :passo="passo"
+    ></step-card>
+
+  </main>
+
+</div>
+
+<script>
+const { createApp } = Vue;
+
+createApp({
+
+  data() {
+    return {
+
+      // ID do tutorial selecionado
+      tutorialSelecionado: "cpp-windows",
+
+      // Lista disponível no seletor
+      listaTutoriais: [
+        { id: "cpp-windows", nome: "C++ no Windows" },
+        { id: "cpp-ubuntu", nome: "C++ no Ubuntu" }
+      ],
+
+      // Conteúdo atual
+      tutorialAtual: {}
+
+    }
+  },
+
+  methods: {
+
+    // Função responsável por trocar o tutorial
+    trocarTutorial() {
+      this.carregarTutorial(this.tutorialSelecionado);
+    },
+
+    // Simula carregamento (depois pode virar fetch JSON)
+    carregarTutorial(id) {
+
+      if (id === "cpp-windows") {
+        this.tutorialAtual = {
+          titulo: "Hello World em C++",
+          descricao: "Tutorial no Windows com MinGW",
+          passos: [
+            {
+              titulo: "Instalar compilador",
+              cor: "blue",
+              conteudo: "Baixe o MinGW no site oficial."
+            },
+            {
+              titulo: "Adicionar ao PATH",
+              cor: "green",
+              conteudo: "Adicione C:\\mingw64\\bin ao PATH."
+            },
+            {
+              titulo: "Compilar",
+              cor: "purple",
+              conteudo: `<pre>g++ main.cpp -o hello\n./hello</pre>`
+            }
+          ]
+        }
+      }
+
+      if (id === "cpp-ubuntu") {
+        this.tutorialAtual = {
+          titulo: "Hello World em C++",
+          descricao: "Tutorial no Ubuntu",
+          passos: [
+            {
+              titulo: "Instalar g++",
+              cor: "blue",
+              conteudo: `<pre>sudo apt update\nsudo apt install build-essential</pre>`
+            },
+            {
+              titulo: "Criar arquivo",
+              cor: "green",
+              conteudo: `<pre>nano main.cpp</pre>`
+            },
+            {
+              titulo: "Compilar e executar",
+              cor: "purple",
+              conteudo: `<pre>g++ main.cpp -o hello\n./hello</pre>`
+            }
+          ]
+        }
+      }
+
+    }
+
+  },
+
+  // Executa ao iniciar
+  mounted() {
+    this.carregarTutorial(this.tutorialSelecionado);
+  }
+
+})
+
+// COMPONENTE GLOBAL
+.component('step-card', {
+
+  props: ['passo', 'numero'],
+
+  template: `
+    <section class="bg-white rounded-xl shadow-md p-6 border-l-4"
+      :class="'border-' + passo.cor + '-500'">
+
+      <h2 class="text-2xl font-bold mb-3 flex items-center gap-2">
+        <span class="px-3 py-1 rounded-full text-sm"
+          :class="'bg-' + passo.cor + '-100 text-' + passo.cor + '-700'">
+          {{ numero }}
+        </span>
+
+        {{ passo.titulo }}
+      </h2>
+
+      <div v-html="passo.conteudo" class="text-gray-700"></div>
+
+    </section>
+  `
+})
+
+.mount('#app');
+</script>
+
+</body>
+</html>
