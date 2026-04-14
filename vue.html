@@ -204,43 +204,57 @@ createApp({
         }
       }
 
-      if (this.plataformaAtiva === 'ubuntu') {
-        this.tutorialAtual = {
-          passos: [
-            {
-              titulo: "Instalar g++",
-              cor: "blue",
-              codigo: [
-                "sudo apt update",
-                "sudo apt install build-essential"
-              ]
-            },
-            {
-              titulo: "Criar arquivo",
-              cor: "yellow",
-              codigo: [
-                "nano main.cpp"
-              ]
-            },
-            {
-              titulo: "Compilar código",
-              cor: "green",
-              codigo: [
-                "g++ main.cpp -o hello",
-                "./hello"
-              ]
-            },
-            {
-              titulo: "Saída esperada",
-              tipo: "output",
-              cor: "gray",
-              codigo: [
-                "Hello, World!"
-              ]
-            }
-          ]
-        }
+    if (this.plataformaAtiva === 'ubuntu') {
+  this.tutorialAtual = {
+    passos: [
+      {
+        titulo: "Instalar g++",
+        cor: "blue",
+        codigo: [
+          "sudo apt update",
+          "sudo apt install build-essential"
+        ]
+      },
+      {
+        titulo: "Criar arquivo",
+        cor: "yellow",
+        codigo: [
+          "nano main.cpp"
+        ]
+      },
+      {
+        titulo: "Escrever código",
+        texto: "Cole o código abaixo dentro do arquivo main.cpp:",
+        cor: "indigo",
+        codigo: [
+          "#include <iostream>",
+          "",
+          "int main() {",
+          '    std::cout << "Hello, World!" << std::endl;',
+          "    return 0;",
+          "}"
+        ],
+        prefixo: "" // remove $ (melhor UX para código fonte)
+      },
+      {
+        titulo: "Compilar código",
+        cor: "green",
+        codigo: [
+          "g++ main.cpp -o hello",
+          "./hello"
+        ]
+      },
+      {
+        titulo: "Saída esperada",
+        tipo: "output",
+        cor: "gray",
+        codigo: [
+          "Hello, World!"
+        ]
       }
+    ]
+  }
+}
 
     },
 
